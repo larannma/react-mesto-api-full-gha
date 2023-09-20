@@ -1,0 +1,14 @@
+.popup__text{
+  font-size: 14px;
+  line-height: 17px;
+  max-width: 358px;
+  padding-bottom: 10px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  color: #000000;
+}
+
+.popup__text:nth-child(3){
+  padding-top: 13px;
+}

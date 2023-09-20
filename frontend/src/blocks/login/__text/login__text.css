@@ -1,0 +1,20 @@
+.login__text{
+    font-size: 14px;
+    line-height: 17px;
+    max-width: 358px;
+    padding-bottom: 10px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    background-color: #000000;
+    border-bottom: 2px solid #CCCCCC;
+		color: #ffffff;
+
+}
+
+.login__text:-webkit-autofill, .login__text:-webkit-autofill:hover, .login__text:-webkit-autofill:focus
+{
+  -webkit-box-shadow: 0 0 0 30px #000000 inset !important;
+  background-color: #000000 !important;
+	-webkit-text-fill-color: #ffffff;
+}

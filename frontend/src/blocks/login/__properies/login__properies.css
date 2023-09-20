@@ -1,0 +1,14 @@
+.login__properies{
+    display: flex;
+    flex-direction: column;
+    width: 358px;
+    gap: 30px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.login__properies input {
+    color: #ffffff;
+    background-color: rgba(0, 0, 0, 0);
+}
+

@@ -1,0 +1,17 @@
+.element__like-ico{
+  background-color: transparent;
+  border: none;
+  background: url(../../../images/Vector.svg) center no-repeat;
+  background-size: cover;
+  flex-shrink: 0;
+  cursor: pointer;
+  height: 19px;
+  width: 22px;
+  opacity: 1;
+  padding: 0;
+  transition: opacity 0.5s;
+}
+
+.element__like-ico:hover {
+  opacity: 0.5;
+}

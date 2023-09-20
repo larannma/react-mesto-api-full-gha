@@ -1,0 +1,12 @@
+.header__direction{
+  display: flex;
+  align-self: flex-end;
+  color: #ffffff;
+  text-decoration: none;
+  text-align: right;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+}
