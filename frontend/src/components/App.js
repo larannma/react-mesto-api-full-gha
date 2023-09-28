@@ -46,17 +46,22 @@ function App() {
           Auth.getContent(token).then((res) => {
           if (res){
             setUserData({
-              email: res.data.email
+              email: res.email
             });
+            api.getUserInfo(localStorage.getItem('token')).then((res) => {
+              setCurrentUser(res);
+            }).catch((err => {
+              console.log(err)
+            }));
             setLoggedIn(true);
             navigate("/my-profile", {replace: true})
           }
-        }).catch(error => console.log(error.message));
+        }).catch(error => console.log(error));
     }
   } 
 
   React.useEffect(() => {
-    api.getUserInfo().then((res) => {
+    api.getUserInfo(localStorage.getItem('token')).then((res) => {
       setCurrentUser(res);
     }).catch((err => {
       console.log(err)
@@ -64,7 +69,7 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    api.getCards().then((res) => {
+    api.getCards(localStorage.getItem('token')).then((res) => {
       setCards(res);
     }).catch((err => {
       console.log(err)
@@ -116,17 +121,17 @@ function App() {
 
   function handleCardLike(card) {
       const isLiked = card.likes.some(i => (
-        i._id === currentUser._id
-        ));
-
+        i === currentUser._id
+      ));
+      
       if (!isLiked) {
-        api.putLike(currentUser, card._id).then((newCard) => {
+        api.putLike(currentUser, card._id, getToken()).then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         }).catch((err => {
           console.log(err)
         }));
       } else {
-        api.deleteLike(currentUser, card._id).then((newCard) => {
+        api.deleteLike(currentUser, card._id, getToken()).then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
         }).catch((err => {
           console.log(err)
@@ -135,15 +140,20 @@ function App() {
   }
 
   function handleCardDelete(card) {
-    api.deleteCard(card._id).then(() => {
+    api.deleteCard(card._id, getToken()).then(() => {
       setCards((state) => state.filter(c => c._id !== card._id));
     }).catch((err => {
       console.log(err)
     }));
   }
 
+  const getToken = () => {
+    return (localStorage.getItem('token'))
+  }
+
   const handleUpdateUser = (data) => {
-    api.editUserInfo(data.name, data.description).then((res) => {
+    api.editUserInfo(data.name, data.description, getToken()).then((res) => {
+      console.log(res)
       setCurrentUser(res);
       closeAllPopups();
     }).catch((err => {
@@ -152,7 +162,7 @@ function App() {
   }
 
   const handleUpdateAvatar = (data) => {
-    api.editUserPhoto(data.avatar).then((res) => {
+    api.editUserPhoto(data.avatar, getToken()).then((res) => {
       setCurrentUser(res);
       closeAllPopups();
     }).catch((err => {
@@ -161,7 +171,7 @@ function App() {
   }
 
   const onAddPlace = (data) => {
-    api.postCard(data.placeName, data.placeLink).then((newCard) => {
+    api.postCard(data.placeName, data.placeLink, getToken()).then((newCard) => {
       setCards([newCard, ...cards]);
       closeAllPopups();
     }).catch((err => {

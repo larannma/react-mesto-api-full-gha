@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const cardRouter = require('./routes/cards');
 const userRouter = require('./routes/users');
 const { auth } = require('./middlewares/auth');
@@ -22,11 +23,11 @@ const {
 
 const {
   PORT = 3000,
-  DB_URL = 'mongodb://0.0.0.0:27017/mestodb',
+  DB_URL = process.env.DB_URL,
 } = process.env;
 
 
-const origin = "http://localhost:3001" 
+const origin = process.env.NODE_FRONTEND_URL
 
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,

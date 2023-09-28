@@ -2,35 +2,34 @@ class Api {
     constructor(config) {
         this._url = config.url;
         this._headers = config.headers;
-        this._authorization = config.headers.authorization; //token
     }
 
-    getCards() {
+    getCards(token) {
         return fetch(`${this._url}/cards`, {
             headers: {
-                authorization: this._authorization,
+                authorization: token,
                 'Content-type': 'aplication/json'
             }
         })
         .then(this._handleResponse);
     }
 
-    deleteCard(cardID) {
+    deleteCard(cardID, token) {
         return fetch(`${this._url}/cards/${cardID}`, {
             method: "DELETE",
             headers: {
-                authorization: this._authorization,
+                authorization: token,
                 'Content-type': 'aplication/json'
             }
         })
         .then(this._handleResponse);
     }
 
-    postCard(name, link) {
+    postCard(name, link, token) {
       return fetch(`${this._url}/cards/`, {
         method: "POST",
         headers: {
-          authorization: this._authorization,
+          authorization: token,
           'Content-type': 'application/json'
         },
         body: JSON.stringify({
@@ -41,21 +40,21 @@ class Api {
       .then(this._handleResponse);
     }
 
-    getUserInfo(){
+    getUserInfo(token){
       return fetch(`${this._url}/users/me`, {
           headers: {
-              authorization: this._authorization,
-              'Content-type': 'aplication/json'
+            authorization: token,
+            'Content-type': 'aplication/json'
           }
       })
       .then(this._handleResponse);
   }
 
-    editUserInfo(name, about) {
+    editUserInfo(name, about, token) {
       return fetch(`${this._url}/users/me`, {
         method: "PATCH",
         headers: {
-          authorization: this._authorization,
+          authorization: token,
           'Content-type': 'application/json'
         },
         body: JSON.stringify({
@@ -64,6 +63,10 @@ class Api {
         })
     })
     .then(this._handleResponse);
+  }
+
+  setToken(token) {
+    this._authorization = token;
   }
 
   _handleResponse(res) {
@@ -82,11 +85,11 @@ class Api {
     return Promise.all([this.postCard(name, link), this.getUserInfo()]);
   }
 
-  putLike(userData, cardID) {
+  putLike(userData, cardID, token) {
     return fetch(`${this._url}/cards/${cardID}/likes`, {
       method: "PUT",
       headers: {
-        authorization: this._authorization,
+        authorization: token,
         'Content-type': 'application/json'
       },
       body: JSON.stringify(userData)
@@ -94,11 +97,11 @@ class Api {
     .then(this._handleResponse);
   }
 
-  deleteLike(userData, cardID) {
+  deleteLike(userData, cardID, token) {
     return fetch(`${this._url}/cards/${cardID}/likes`, {
       method: "DELETE",
       headers: {
-        authorization: this._authorization,
+        authorization: token,
         'Content-type': 'application/json'
       },
       body: JSON.stringify(userData)
@@ -106,11 +109,11 @@ class Api {
     .then(this._handleResponse);
   }
 
-  editUserPhoto(avatarURL) {
+  editUserPhoto(avatarURL, token) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: "PATCH",
       headers: {
-        authorization: this._authorization,
+        authorization: token,
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
@@ -126,10 +129,7 @@ class Api {
 }
 
 const api = new Api ({
-  url: process.env.REACT_APP_URL,
-  headers: {
-    authorization:"dc202966-4535-49ef-8591-fac68a4cb807",
-  }
+  url: 'http://localhost:3000'
 })
 
 export default api;

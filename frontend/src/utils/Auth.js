@@ -1,4 +1,5 @@
-export const BASE_URL = process.env.REACT_APP_URL;
+import api from './api'
+const BASE_URL = 'http://localhost:3000';
 
 const _handleResponse = (res) => {
   if (res.ok){
@@ -28,16 +29,16 @@ export const authorize = (email, password) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({email, password}),
+    body: JSON.stringify({email, password }),
   })
   .then(_handleResponse)
   .then((data) => {
     if (data.token){
       localStorage.setItem('token', data.token);
+      api.setToken(data.token)
       return data;
     }
-  })
-  ;
+  });
 };
 
 export const getContent = (token) => {
@@ -46,7 +47,7 @@ export const getContent = (token) => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      // 'Authorization': `Bearer ${token}`,
+      'Authorization': `${token}`,
     }
   })
   .then(_handleResponse)

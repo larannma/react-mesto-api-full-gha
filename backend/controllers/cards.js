@@ -53,6 +53,7 @@ const addLikeById = (req, res, next) => {
       if (r === null) {
         throw new NotFoundError("Карточка не найдена")
       }
+      console.log(r)
       return res.status(200).send(r);
     })
     .catch(err => next(err));
