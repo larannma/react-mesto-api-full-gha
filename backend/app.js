@@ -27,7 +27,7 @@ const {
 } = process.env;
 
 
-const origin = process.env.NODE_FRONTEND_URL
+const origin = process.env.NODE_ENV !== 'production' ? "http://localhost:3001" : process.env.NODE_FRONTEND_URL
 
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
