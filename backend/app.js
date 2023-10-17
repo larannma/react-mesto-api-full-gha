@@ -33,9 +33,9 @@ const origin = process.env.NODE_ENV !== 'production' ? "http://localhost:3001" :
 const allowedCors = [
   'https://praktikum.tk',
   'http://praktikum.tk',
-  'localhost:3000',
-  'http://api.mesto.larannma.nomoredomainsrocks.ru/',
-  'http://mesto.larannma.nomoredomainsrocks.ru/'
+  'http://localhost:3000',
+  'http://api.mesto.larannma.nomoredomainsrocks.ru',
+  'http://mesto.larannma.nomoredomainsrocks.ru'
 ];
 
 mongoose.connect(DB_URL, {
