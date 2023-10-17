@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const { NotFoundError } = require('./errors/errors');
 const cors = require('cors');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const urlPattern = new RegExp(
   "^((http|https):\\/\\/)?(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,6})+[a-zA-Z0-9-._~:\\/?#\\[\\]@!$&'()*+,;=]*$"
 );
@@ -47,6 +48,8 @@ app.use(
 app.use(express.static('public'));
 app.use(express.json());
 
+app.use(requestLogger);
+
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -74,6 +77,8 @@ app.use(errors());
 app.use((req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 })
+
+app.use(errorLogger);
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
