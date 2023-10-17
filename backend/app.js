@@ -30,14 +30,6 @@ const {
 
 const origin = process.env.NODE_ENV !== 'production' ? "http://localhost:3001" : process.env.NODE_FRONTEND_URL
 
-const allowedCors = [
-  'https://praktikum.tk',
-  'http://praktikum.tk',
-  'http://localhost:3000',
-  'http://api.mesto.larannma.nomoredomainsrocks.ru',
-  'http://mesto.larannma.nomoredomainsrocks.ru'
-];
-
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
@@ -54,23 +46,16 @@ app.use(
 );
 
 app.use(function(req, res, next) {
-  const { origin } = req.headers;
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
+  res.header('Access-Control-Allow-Origin', '*'); // Разрешить доступ с любых источников (* - wildcard)
+  res.header('Access-Control-Allow-Methods', '*'); // Разрешить все типы запросов
+  res.header('Access-Control-Allow-Headers', '*'); // Разрешить все заголовки запроса
+
+  if (req.method === 'OPTIONS') {
+    // Обработка предварительных (preflight) запросов
+    res.sendStatus(200);
+  } else {
+    next();
   }
-
-  const { method } = req; // Сохраняем тип запроса (HTTP-метод) в соответствующую переменную
-
-  // Значение для заголовка Access-Control-Allow-Methods по умолчанию (разрешены все типы запросов)
-  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
-
-  // Если это предварительный запрос, добавляем нужные заголовки
-  if (method === 'OPTIONS') {
-      // разрешаем кросс-доменные запросы любых типов (по умолчанию)
-      res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-      return res.end();
-  }
-  next();
 });
 
 app.use(express.static('public'));
