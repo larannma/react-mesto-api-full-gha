@@ -8,8 +8,8 @@ const { ConflictError,
         NotFoundError,
         NotAuthorizedError } = require('../errors/errors');
 
-const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS);
-const JWT_SECRET = process.env.JWT_SECRET;
+const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS) || 10;
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretstring';
 
 const getUsers = (req, res, next) => userModel.find({})
   .then((result) => res.status(200).send(result))
