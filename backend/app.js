@@ -24,7 +24,7 @@ const {
 
 const {
   PORT = 3000,
-  DB_URL = process.env.DB_URL,
+  DB_URL = process.env.DB_URL || 'mongodb://0.0.0.0:27017/mestodb',
 } = process.env;
 
 
@@ -35,8 +35,8 @@ const corseAllowedOrigins = [
   'https://mesto.larannma.nomoredomainsrocks.ru',
   'http://localhost:3001'
 ];
-
-mongoose.connect(String(DB_URL), {
+console.log(DB_URL)
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
 
