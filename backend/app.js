@@ -36,7 +36,7 @@ const corseAllowedOrigins = [
   'http://localhost:3001'
 ];
 
-mongoose.connect(DB_URL, {
+mongoose.connect(String(DB_URL), {
   useNewUrlParser: true,
 });
 
