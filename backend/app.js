@@ -30,6 +30,12 @@ const {
 
 const origin = process.env.NODE_ENV !== 'production' ? "http://localhost:3001" : process.env.NODE_FRONTEND_URL
 
+const corseAllowedOrigins = [
+  'http://mesto.larannma.nomoredomainsrocks.ru',
+  'https://mesto.larannma.nomoredomainsrocks.ru',
+  'http://localhost:3001'
+];
+
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
@@ -38,25 +44,11 @@ const app = express();
 
 app.use(cookieParser());
 
-app.use(
-  cors({
-    credentials: true,
-    origin
-  }),
-);
-
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*'); // Разрешить доступ с любых источников (* - wildcard)
-  res.header('Access-Control-Allow-Methods', '*'); // Разрешить все типы запросов
-  res.header('Access-Control-Allow-Headers', '*'); // Разрешить все заголовки запроса
-
-  if (req.method === 'OPTIONS') {
-    // Обработка предварительных (preflight) запросов
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
+app.use(cors({
+  origin: corseAllowedOrigins,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
 
 app.use(express.static('public'));
 app.use(express.json());
