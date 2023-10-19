@@ -1,25 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const { celebrate, Joi, errors } = require('celebrate');
 const cardRouter = require('./routes/cards');
 const userRouter = require('./routes/users');
 const { auth } = require('./middlewares/auth');
-const cookieParser = require('cookie-parser');
-const { celebrate, Joi, errors } = require('celebrate');
 const { NotFoundError } = require('./errors/errors');
-const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const urlPattern = new RegExp(
-  "^((http|https):\\/\\/)?(www\\.)?[a-zA-Z0-9-]+(\\.[a-zA-Z]{2,6})+[a-zA-Z0-9-._~:\\/?#\\[\\]@!$&'()*+,;=]*$"
-);
 
-const emailPattern = new RegExp(
-  "^[^\s@]+@[^\s@]+\.[^\s@]+$"
-);
+const urlPattern = /^((http|https):\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,6})+[a-zA-Z0-9-._~:/?#[\]@!$&'()*+,;=]*$/;
 
 const {
   createUser,
-  login
+  login,
 } = require('./controllers/users');
 
 const {
@@ -27,15 +22,14 @@ const {
   DB_URL = process.env.DB_URL || 'mongodb://0.0.0.0:27017/mestodb',
 } = process.env;
 
-
-const origin = process.env.NODE_ENV !== 'production' ? "http://localhost:3001" : process.env.NODE_FRONTEND_URL
+// const origin = process.env.NODE_ENV !== 'production' ? "http://localhost:3001" : process.env.NODE_FRONTEND_URL
 
 const corseAllowedOrigins = [
   'http://mesto.larannma.nomoredomainsrocks.ru',
   'https://mesto.larannma.nomoredomainsrocks.ru',
-  'http://localhost:3001'
+  'http://localhost:3001',
 ];
-console.log(DB_URL)
+
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
@@ -60,7 +54,7 @@ app.post('/signin', celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
-}),login);
+}), login);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -76,7 +70,7 @@ app.post('/signup', celebrate({
     about: Joi.string().min(2).max(30),
     avatar: Joi.string().pattern(urlPattern),
   }),
-}),createUser);
+}), createUser);
 
 app.use(auth);
 
@@ -87,11 +81,11 @@ app.use(errors());
 
 app.use((req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
-})
+});
 
 app.use(errorLogger);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const { statusCode = 500, message } = err;
 
   res
@@ -99,7 +93,7 @@ app.use((err, req, res, next) => {
     .send({
       message: statusCode === 500
         ? 'На сервере произошла ошибка'
-        : message
+        : message,
     });
 });
 

@@ -69,12 +69,16 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    api.getCards(localStorage.getItem('token')).then((res) => {
-      setCards(res);
-    }).catch((err => {
-      console.log(err)
-    }));
-  }, []);
+    if (loggedIn) {
+      api.getCards(localStorage.getItem('token'))
+        .then((res) => {
+          setCards(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   function handleCardClick(cardInfo) {
     setImagePopupOpen(true);

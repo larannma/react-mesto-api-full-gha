@@ -40,7 +40,7 @@ function Login ({handleLogin}) {
 			<form onSubmit={handleSubmit} className="login__form">
 				<div className="login__properies">
 					<input onChange={handleChange} value={formValue.email} className="login__text" id="email-input" name="email" placeholder="Email" type="email" required></input>
-					<input onChange={handleChange} value={formValue.password} className="login__text" id="password-input" name="password" placeholder="Пароль" type="text" required></input>
+					<input onChange={handleChange} value={formValue.password} className="login__text" id="password-input" name="password" placeholder="Пароль" type="password" required></input>
 				</div>
 				<button type="submit" className="login__button">Войти</button>
 			</form>

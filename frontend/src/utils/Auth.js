@@ -1,5 +1,5 @@
 import api from './api'
-const BASE_URL = process.env.REACT_APP_URL;
+const BASE_URL = process.env.REACT_APP_URL || 'http://localhost:3000';
 
 const _handleResponse = (res) => {
   if (res.ok){
